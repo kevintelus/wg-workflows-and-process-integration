@@ -188,7 +188,7 @@ For agents that hand off control to each other with no central coordinator and n
 
 **Not resolved.**
 
-The two values measure different things. `Parallel fan-out` ("concurrent sub-tasks") is about timing; `Sequential pipeline` ("dependent activities, each feeding the next") is about dependency. They aren't opposites, so a row can match neither: three reads that run one after another but don't feed each other are neither concurrent nor dependent. 20 of the 24 `Unspecified` rows in the inventory are stuck here.
+The two values measure different things. `Parallel fan-out` ("concurrent sub-tasks") is about timing; `Sequential pipeline` ("dependent activities, each feeding the next") is about dependency. They aren't opposites, so a row can match neither: three reads that run one after another but don't feed each other are neither concurrent nor dependent. 11 of the 15 `Unspecified` cells in the inventory are stuck here (20 of 26 before the October source cleanup in #41).
 
 Three readings proposed, none adopted:
 
@@ -198,7 +198,9 @@ Three readings proposed, none adopted:
 | Agent count | the work is split across agents | conflicts with "No other Workflow Pattern value implies anything about Agent Count" |
 | Dependency | the activities don't consume each other's output | read off the row's Description, so inferred rather than cited |
 
-Settling it probably depends on a prior question: whether these columns record one implementation or something true of the use case.
+The agent-count reading is already in use. The October source cleanup (#41) moved three rows off `Parallel fan-out` because a single agent made the calls (On-call incident summary, Competitor monitoring, Onboarding task creation), classified Incident post-mortem drafting as fan-out on evidence of two agents working concurrently, and phrased the remaining `Unspecified` notes as "whether separate worker agents handle each source concurrently is not confirmed". The Workflow Pattern section above was not changed, so the inventory and the schema currently read fan-out differently.
+
+The prior question — whether these columns record one implementation or something true of the use case — has a working answer from the #41 review thread: they record observed properties of specific deployments, and a different implementer could choose differently. That makes any of the three readings citeable per row. It doesn't pick one; the schema still has to say which applies, and the Workflow Pattern section and the inventory then need to agree.
 
 **Also unresolved:** many rows are hybrids — gather from independent sources, merge, then run a dependent chain. First match wins, so only the first shape survives.
 
